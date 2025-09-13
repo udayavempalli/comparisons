@@ -1,0 +1,73 @@
+=================================================================
+STANDALONE IMAGE COMPARISON SCRIPT - USAGE GUIDE
+=================================================================
+
+INSTALLATION:
+1. Save the code as: standalone_image_compare.py
+2. Install dependencies: pip install opencv-python scikit-image numpy
+
+BASIC USAGE:
+python standalone_image_compare.py <base_image> <actual_image>
+
+EXAMPLES:
+# Compare two images with full visual output
+python standalone_image_compare.py screenshot1.jpg screenshot2.jpg
+
+# Fast comparison without visual files
+python standalone_image_compare.py base.png actual.png --no-visual
+
+# Get JSON output for automation
+python standalone_image_compare.py img1.jpg img2.jpg --json
+
+# Using full paths
+python standalone_image_compare.py /path/to/base.jpg /path/to/actual.jpg
+
+COMMAND LINE OPTIONS:
+--no-visual    Skip generating visual output files (faster)
+--json         Output results in JSON format
+--help         Show help message
+
+WHAT IT DOES:
+✓ Automatically detects anchor points in both images
+✓ Aligns images using reliable anchor points
+✓ Falls back to direct comparison if anchors aren't reliable
+✓ Calculates similarity percentage using SSIM
+✓ Generates visual comparison files (optional)
+
+OUTPUT FILES (if visual output enabled):
+comparison_output/01_original_images.jpg     - Side-by-side originals
+comparison_output/02_anchor_points.jpg       - Detected anchor points
+comparison_output/03_aligned_comparison.jpg  - Aligned images
+comparison_output/04_difference_heatmap.jpg  - Difference visualization
+comparison_output/05_overlay.jpg             - Blended overlay
+
+CONSOLE OUTPUT:
+- Progress messages during processing
+- Final similarity percentage
+- Alignment method used
+- Processing time in milliseconds
+- Number of anchor points detected
+
+SUPPORTED FORMATS:
+JPG, JPEG, PNG, BMP, TIFF (any format OpenCV supports)
+
+TYPICAL RESULTS:
+90-100%: Very similar images
+75-89%:  Similar with minor differences
+50-74%:  Somewhat different
+0-49%:   Very different images
+
+TROUBLESHOOTING:
+- Ensure both image files exist and are readable
+- Check that dependencies are installed correctly
+- For large images, processing may take longer
+- If alignment fails, direct comparison is used automatically
+
+AUTOMATION EXAMPLE:
+result=$(python standalone_image_compare.py img1.jpg img2.jpg --json --no-visual)
+similarity=$(echo $result | jq '.similarity_percentage')
+if (( $(echo "$similarity > 90" | bc -l) )); then
+    echo "Images are very similar"
+fi
+
+=================================================================

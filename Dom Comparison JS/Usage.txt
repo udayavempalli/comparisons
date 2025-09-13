@@ -1,0 +1,56 @@
+DOM Structural Comparison Tool
+============================
+
+DESCRIPTION:
+This tool compares two HTML files and calculates the structural differences between them.
+It analyzes DOM structure, hierarchy, layout elements, and attributes to determine how much the pages have changed.
+
+INSTALLATION:
+npm install jsdom
+
+USAGE:
+node compare-real-doms.js <expectedFile> <actualFile>
+
+EXAMPLES:
+node compare-real-doms.js ExpectedDOM.html ActualDOM.html
+node compare-real-doms.js page1.html page2.html
+node compare-real-doms.js baseline.html current.html
+
+OUTPUT:
+Change: 25.67%          - Overall percentage change (0-100%)
+Decision: CAUTION       - Safety assessment (SAFE/CAUTION/RISKY/DANGEROUS)
+Structure: 33.33%       - HTML element changes (40% weight)
+Hierarchy: 25%          - Parent-child relationship changes (30% weight)
+Layout: 20%             - Semantic layout element changes (20% weight)
+Attributes: 0%          - Attribute changes (10% weight)
+
+DECISION LEVELS:
+SAFE        (0-15%)     - Minor changes, tests should work normally
+CAUTION     (15-35%)    - Moderate changes, some test adjustments may be needed
+RISKY       (35-50%)    - Significant changes, careful review needed
+DANGEROUS   (50%+)      - Major changes, thorough review required
+
+WHAT IT IGNORES:
+- Script tags (<script>)
+- Style tags (<style>)
+- Meta tags (<meta>)
+- Link tags (<link>)
+- Title tags (<title>)
+- Text content (only structure matters)
+- Comments
+
+WHAT IT ANALYZES:
+- HTML element types and counts
+- Parent-child relationships
+- Layout elements (header, nav, main, section, article, footer)
+- Specific attributes (role, type, aria-label, aria-hidden, id, class)
+
+REQUIREMENTS:
+- Node.js
+- jsdom package (npm install jsdom)
+- Two HTML files to compare
+
+TROUBLESHOOTING:
+- If you see "punycode deprecation warning", ignore it or use: node --no-deprecation compare-real-doms.js
+- Make sure both HTML files exist and are readable
+- Ensure jsdom is installed: npm list jsdom
